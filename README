@@ -1,0 +1,25 @@
+All code for my electricalily board.
+
+ABOUT
+=====
+The electricalily board is a 9 channel pwm board controlled over USB.
+
+USB support is provided via the v-usb project, courtesy of Objective
+Development, http://www.obdev.at/products/vusb/index.html.
+
+commandline:
+ - c library + binary + makefile for talking to the board
+ - python ctypes adapter for controlling things from python
+
+firmware:
+ - all code + makefile to compile the hex for atmega8
+ - pulls in v-usb code
+ - 9 channel software pwm
+
+LICENSE
+=======
+All electricalily code is distributed under the terms of the GNU General
+Public License (GPL) version 2 (see License.txt for details) and the GNU
+General Public License (GPL) version 3. It is your choice whether you apply
+the terms of version 2 or version 3.
+
