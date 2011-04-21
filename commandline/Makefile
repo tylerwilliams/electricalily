@@ -24,6 +24,7 @@ EXE_SUFFIX =
 
 NAME = set-led
 
+LIBOBJECTS = opendevice.o led.o
 OBJECTS = opendevice.o led.o $(NAME).o
 
 CC		= gcc
@@ -40,8 +41,8 @@ lib: $(LIBS)
 .c.o:
 	$(CC) $(CFLAGS) -c $<
 
-$(PROGRAM): $(OBJECTS)
-	$(CC) -o $(PROGRAM) $(OBJECTS) $(LIBS)
+$(PROGRAM): $(OBJECTS) $(LIBS)
+	$(CC) -o $(PROGRAM) $(NAME).o led.so $(LIBS)
 
 strip: $(PROGRAM)
 	strip $(PROGRAM)
@@ -49,5 +50,5 @@ strip: $(PROGRAM)
 clean:
 	rm -f *.o *.so $(PROGRAM)
 
-$(LIBS): $(OBJECTS)
-	$(CC) -shared $(OBJECTS) $(LIBS) -o led.so
+$(LIBS): $(LIBOBJECTS)
+	$(CC) -shared $(LIBOBJECTS) $(LIBS) -o led.so

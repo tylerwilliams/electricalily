@@ -1,6 +1,6 @@
 #include "led.h"
 
-void print_status(usb_dev_handle *handle)
+void print_status(void)
 {
   char                buffer[4];
   int cnt = usb_control_msg(handle, USB_TYPE_VENDOR | USB_RECIP_DEVICE | USB_ENDPOINT_IN, CUSTOM_RQ_GET_STATUS, 0, 0, buffer, sizeof(buffer), 5000);
@@ -15,7 +15,8 @@ void print_status(usb_dev_handle *handle)
   }
 }
 
-void test(usb_dev_handle *handle)
+
+void test(void)
 {
   int i;
   char                buffer[4];
@@ -46,7 +47,7 @@ void test(usb_dev_handle *handle)
   fprintf(stderr, "\nTest completed.\n");
 }
 
-void toggle_led(usb_dev_handle *handle, int state)
+void toggle_led(int state)
 {
   char                buffer[4];
   int cnt = usb_control_msg(handle, USB_TYPE_VENDOR | USB_RECIP_DEVICE | USB_ENDPOINT_OUT, CUSTOM_RQ_SET_STATUS, state, 0, buffer, 0, 5000);
@@ -55,7 +56,7 @@ void toggle_led(usb_dev_handle *handle, int state)
   }  
 }
 
-void get_pwm_status(usb_dev_handle *handle)
+void get_pwm_status(void)
 {
 
   char buffer[6];
@@ -86,7 +87,7 @@ void get_pwm_status(usb_dev_handle *handle)
 
 }
 
-void set_pwm_status(usb_dev_handle *handle, char* led_arg, char* hue_arg, char* brt_arg)
+void set_pwm_status(char* led_arg, char* hue_arg, char* brt_arg)
 {
   char* endptr;
   unsigned int led = strtoul(led_arg, &endptr, 0);
@@ -107,12 +108,11 @@ void set_pwm_status(usb_dev_handle *handle, char* led_arg, char* hue_arg, char* 
   }
 }
 
-usb_dev_handle *my_init(usb_dev_handle *handle)
+void open_handle(void)
 {
   const unsigned char rawVid[2] = {USB_CFG_VENDOR_ID}, rawPid[2] = {USB_CFG_DEVICE_ID};
   char                vendor[] = {USB_CFG_VENDOR_NAME, 0}, product[] = {USB_CFG_DEVICE_NAME, 0};
   int                 vid, pid;
-  
   usb_init();
   /* compute VID/PID from usbconfig.h so that there is a central source of information */
   vid = rawVid[1] * 256 + rawVid[0];
@@ -122,7 +122,9 @@ usb_dev_handle *my_init(usb_dev_handle *handle)
     fprintf(stderr, "Could not find USB device \"%s\" with vid=0x%x pid=0x%x\n", product, vid, pid);
     exit(1);
   }
-
-  return handle;
 }
 
+void close_handle(void)
+{
+  usb_close(handle);
+}

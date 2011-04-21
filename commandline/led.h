@@ -1,3 +1,6 @@
+#ifndef __LED_H_INCLUDED__
+#define __LED_H_INCLUDED__
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -9,15 +12,22 @@
 #include "../firmware/requests.h"   /* custom request numbers */
 #include "../firmware/usbconfig.h"  /* device's VID/PID and names */
 
-void print_status(usb_dev_handle *handle);
+usb_dev_handle *handle = NULL;
 
-void test(usb_dev_handle *handle);
+void print_status(void);
 
-void toggle_led(usb_dev_handle *handle, int state);
+void test_working(void);
 
-void get_pwm_status(usb_dev_handle *handle);
+void test(void);
 
-void set_pwm_status(usb_dev_handle *handle, char* led_arg, char* hue_arg, char* brt_arg);
+void toggle_led(int state);
 
-usb_dev_handle *my_init(usb_dev_handle *handle);
+void get_pwm_status(void);
 
+void set_pwm_status(char* led_arg, char* hue_arg, char* brt_arg);
+
+void open_handle(void);
+
+void close_handle(void);
+
+#endif __LED_H_INCLUDED__
